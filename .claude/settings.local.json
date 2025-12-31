@@ -1,0 +1,68 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git config:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Skill(canvas-design)",
+      "Skill(doc-coauthoring)",
+      "Skill(frontend-design)",
+      "Skill(pdf)",
+      "Skill(pptx)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ],
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "poster|art|design|canvas|visual|포스터|아트|디자인|캔버스",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '🎨 Use Skill(canvas-design)'"
+          }
+        ]
+      },
+      {
+        "matcher": "doc|documentation|proposal|spec|RFC|PRD|문서|제안서|기획|draft|스펙|드래프트",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '📝 Use Skill(doc-coauthoring)'"
+          }
+        ]
+      },
+      {
+        "matcher": "web|page|component|React|HTML|CSS|UI|landing|dashboard|웹|페이지|프론트엔드|컴포넌트|랜딩|대시보드",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '🖥️ Use Skill(frontend-design)'"
+          }
+        ]
+      },
+      {
+        "matcher": "pdf|PDF",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '📄 Use Skill(pdf)'"
+          }
+        ]
+      },
+      {
+        "matcher": "pptx|presentation|slide|PowerPoint|발표|프레젠테이션|슬라이드|파워포인트",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '📊 Use Skill(pptx)'"
+          }
+        ]
+      }
+    ]
+  }
+}
