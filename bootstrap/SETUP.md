@@ -68,7 +68,17 @@ Claude Code에서 다음 명령어들을 사용할 수 있습니다:
 - Git 관련: `git config`, `git add`, `git commit`, `git push`
 - 스킬: `canvas-design`, `doc-coauthoring`, `frontend-design`, `pdf`, `pptx`
 
-**포함된 Hook (UserPromptSubmit):**
+**포함된 음성 알림 Hook:**
+
+| Hook | 트리거 | 음성 메시지 |
+|------|--------|-------------|
+| Stop | 작업 완료 시 | "야 일할 시간이야" |
+| PreToolUse | 질문할 때 | "야 이거 좀 확인해봐" |
+| Notification | bash 실행 시 | "bash다" |
+| PermissionRequest | 권한 요청 시 | "어렵다 퍼미션" |
+| SessionEnd | 세션 종료 시 | "아 뭐라 쳐야 하냐 세션엔드" |
+
+**포함된 스킬 안내 Hook (UserPromptSubmit):**
 
 | 스킬 | Matcher 키워드 |
 |------|----------------|
@@ -78,7 +88,7 @@ Claude Code에서 다음 명령어들을 사용할 수 있습니다:
 | pdf | pdf, PDF |
 | pptx | pptx, presentation, 발표, 프레젠테이션... |
 
-Hook이 설치되면 관련 키워드가 포함된 메시지를 입력할 때 해당 스킬 사용을 안내받습니다.
+Hook이 설치되면 작업 완료, 질문, 권한 요청 등의 이벤트에서 음성 알림을 받고, 관련 키워드가 포함된 메시지를 입력할 때 해당 스킬 사용을 안내받습니다.
 
 ## 디렉토리 구조
 

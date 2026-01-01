@@ -59,7 +59,17 @@ https://raw.githubusercontent.com/conewarrior/claude-toolkit/main/bootstrap/hook
 - `Skill(pdf)` - PDF 처리 스킬
 - `Skill(pptx)` - PowerPoint 처리 스킬
 
-### Hook (UserPromptSubmit)
+### 음성 알림 Hook
+
+| Hook | 트리거 | 음성 메시지 |
+|------|--------|-------------|
+| Stop | 작업 완료 시 | "야 일할 시간이야" |
+| PreToolUse | 질문할 때 (AskUserQuestion) | "야 이거 좀 확인해봐" |
+| Notification | bash 실행 시 | "bash다" |
+| PermissionRequest | 권한 요청 시 | "어렵다 퍼미션" |
+| SessionEnd | 세션 종료 시 | "아 뭐라 쳐야 하냐 세션엔드" |
+
+### 스킬 안내 Hook (UserPromptSubmit)
 
 | 스킬 | Matcher 키워드 |
 |------|----------------|
@@ -90,7 +100,14 @@ https://raw.githubusercontent.com/conewarrior/claude-toolkit/main/bootstrap/hook
    - Skill(pdf)
    - Skill(pptx)
 
-🪝 추가된 Hook:
+🔊 추가된 음성 알림 Hook:
+   - Stop: "야 일할 시간이야"
+   - PreToolUse: "야 이거 좀 확인해봐"
+   - Notification: "bash다"
+   - PermissionRequest: "어렵다 퍼미션"
+   - SessionEnd: "아 뭐라 쳐야 하냐 세션엔드"
+
+🪝 추가된 스킬 안내 Hook:
    - canvas-design: poster|art|design|...
    - doc-coauthoring: doc|documentation|...
    - frontend-design: web|page|component|...
