@@ -1,11 +1,11 @@
 ---
-description: GitHub에서 스킬 Hook 설정을 현재 프로젝트에 설치
+description: GitHub에서 스킬 Hook 설정을 글로벌에 설치
 allowed-tools: Read, Edit, Write, Bash, WebFetch
 ---
 
 # /install-hooks
 
-GitHub 저장소에서 미리 설정된 Hook과 권한을 다운로드하고 현재 프로젝트의 `.claude/settings.local.json`에 병합한다.
+GitHub 저장소에서 미리 설정된 Hook과 권한을 다운로드하고 글로벌 설정 `~/.claude/settings.json`에 병합한다.
 
 ## 실행 단계
 
@@ -17,15 +17,15 @@ GitHub 저장소 `https://github.com/conewarrior/claude-toolkit`의 `bootstrap/h
 https://raw.githubusercontent.com/conewarrior/claude-toolkit/main/bootstrap/hooks.json
 ```
 
-### 2. 기존 settings.local.json 확인
+### 2. 기존 settings.json 확인
 
-`.claude/settings.local.json` 파일 확인:
+`~/.claude/settings.json` 파일 확인:
 - 없으면 hooks.json 내용을 그대로 사용
 - 있으면 기존 내용 읽기
 
 ### 3. 설정 병합
 
-기존 settings.local.json과 hooks.json을 병합:
+기존 settings.json과 hooks.json을 병합:
 
 **permissions.allow 병합:**
 - hooks.json의 권한들을 기존 배열에 추가
@@ -37,7 +37,7 @@ https://raw.githubusercontent.com/conewarrior/claude-toolkit/main/bootstrap/hook
 
 ### 4. 저장
 
-병합된 설정을 `.claude/settings.local.json`에 저장한다.
+병합된 설정을 `~/.claude/settings.json`에 저장한다.
 
 ### 5. 결과 출력
 
@@ -97,11 +97,12 @@ https://raw.githubusercontent.com/conewarrior/claude-toolkit/main/bootstrap/hook
    - pdf: pdf|PDF
    - pptx: pptx|presentation|...
 
-📄 .claude/settings.local.json 업데이트됨
+📄 ~/.claude/settings.json 업데이트됨
 ```
 
 ## 주의사항
 
-- 기존 settings.local.json의 다른 설정(MCP 서버 등)은 유지됨
+- 기존 ~/.claude/settings.json의 다른 설정(MCP 서버 등)은 유지됨
 - 같은 matcher를 가진 기존 Hook은 덮어씌워짐
 - 스킬 파일이 없어도 Hook은 설치됨 (스킬은 별도로 `/install-skill`로 설치)
+- 글로벌 설정이므로 모든 프로젝트에 적용됨
