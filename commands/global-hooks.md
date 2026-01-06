@@ -3,7 +3,7 @@ description: GitHub에서 스킬 Hook 설정을 글로벌에 설치
 allowed-tools: Read, Edit, Write, Bash, WebFetch
 ---
 
-# /install-hooks
+# /global-hooks
 
 GitHub 저장소에서 미리 설정된 Hook과 권한을 다운로드하고 글로벌 설정 `~/.claude/settings.json`에 병합한다.
 
@@ -11,10 +11,10 @@ GitHub 저장소에서 미리 설정된 Hook과 권한을 다운로드하고 글
 
 ### 1. hooks.json 다운로드
 
-GitHub 저장소 `https://github.com/conewarrior/claude-toolkit`의 `bootstrap/hooks.json` 파일을 다운로드한다.
+GitHub 저장소 `https://github.com/conewarrior/claude-toolkit`의 `hooks/hooks.json` 파일을 다운로드한다.
 
 ```
-https://raw.githubusercontent.com/conewarrior/claude-toolkit/main/bootstrap/hooks.json
+https://raw.githubusercontent.com/conewarrior/claude-toolkit/main/hooks/hooks.json
 ```
 
 ### 2. 기존 settings.json 확인
@@ -82,7 +82,7 @@ https://raw.githubusercontent.com/conewarrior/claude-toolkit/main/bootstrap/hook
 ## 예시
 
 ```bash
-/install-hooks
+/global-hooks
 ```
 
 출력:

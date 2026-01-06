@@ -1,6 +1,6 @@
 # Claude Toolkit 글로벌 설치 가이드
 
-다른 프로젝트나 컴퓨터에서 Claude Code를 사용할 때, bootstrap 커맨드들을 글로벌로 설치하는 방법입니다.
+다른 프로젝트나 컴퓨터에서 Claude Code를 사용할 때, 커맨드들을 글로벌로 설치하는 방법입니다.
 
 ## 설치 방법
 
@@ -17,19 +17,20 @@ cd claude-toolkit
 mkdir -p ~/.claude/commands
 ```
 
-### 3. Bootstrap 커맨드 복사
+### 3. 커맨드 복사
 
 ```bash
-cp bootstrap/install-skill.md ~/.claude/commands/
-cp bootstrap/install-command.md ~/.claude/commands/
-cp bootstrap/install-agent.md ~/.claude/commands/
-cp bootstrap/register-skill.md ~/.claude/commands/
+cp commands/install-skill.md ~/.claude/commands/
+cp commands/install-command.md ~/.claude/commands/
+cp commands/install-agent.md ~/.claude/commands/
+cp commands/register-skill.md ~/.claude/commands/
+cp commands/global-hooks.md ~/.claude/commands/
 ```
 
 또는 한 번에:
 
 ```bash
-cp bootstrap/*.md ~/.claude/commands/
+cp commands/*.md ~/.claude/commands/
 ```
 
 ## 설치 확인
@@ -41,7 +42,7 @@ Claude Code에서 다음 명령어들을 사용할 수 있습니다:
 | `/install-skill <name>` | GitHub에서 스킬을 다운로드하고 프로젝트에 설치 |
 | `/install-command <name>` | GitHub에서 커맨드를 다운로드하고 설치 |
 | `/install-agent <name>` | GitHub에서 서브에이전트를 다운로드하고 설치 |
-| `/install-hooks` | 미리 설정된 Hook과 권한을 프로젝트에 설치 |
+| `/global-hooks` | 미리 설정된 Hook과 권한을 글로벌에 설치 |
 | `/register-skill <name>` | 이미 설치된 스킬의 Hook과 권한을 등록 |
 
 ## 사용 예시
@@ -57,12 +58,12 @@ Claude Code에서 다음 명령어들을 사용할 수 있습니다:
 /install-skill frontend-design
 
 # 모든 스킬의 Hook과 권한 한 번에 설치
-/install-hooks
+/global-hooks
 ```
 
 ## Hook 설정 설치
 
-`/install-hooks` 명령어를 사용하면 미리 설정된 Hook과 권한을 한 번에 설치할 수 있습니다.
+`/global-hooks` 명령어를 사용하면 미리 설정된 Hook과 권한을 한 번에 글로벌 설정에 설치할 수 있습니다.
 
 **포함된 권한:**
 - Git 관련: `git config`, `git add`, `git commit`, `git push`
@@ -98,7 +99,8 @@ Hook이 설치되면 작업 완료, 질문, 권한 요청 등의 이벤트에서
 │   ├── install-skill.md
 │   ├── install-command.md
 │   ├── install-agent.md
-│   └── register-skill.md
+│   ├── register-skill.md
+│   └── global-hooks.md
 └── settings.json       # 글로벌 설정
 
 프로젝트/
@@ -117,7 +119,7 @@ Hook이 설치되면 작업 완료, 질문, 권한 요청 등의 이벤트에서
 ```bash
 cd claude-toolkit
 git pull
-cp bootstrap/*.md ~/.claude/commands/
+cp commands/*.md ~/.claude/commands/
 ```
 
 ## 문제 해결
