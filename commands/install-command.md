@@ -6,5 +6,5 @@ arguments:
     required: true
 ---
 
-GitHub 저장소 https://github.com/conewarrior/claude-toolkit 의
+GitHub 저장소 https://github.com/conewarrior/siot-claude-toolkit 의
 commands/$ARGUMENTS.command_name.md 파일을 현재 프로젝트의 .claude/commands/에 설치해줘.

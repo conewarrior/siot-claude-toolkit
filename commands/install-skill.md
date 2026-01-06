@@ -15,7 +15,7 @@ GitHub 저장소에서 스킬을 다운로드하고, 프로젝트에 hook과 권
 
 ### 1. 스킬 다운로드
 
-GitHub 저장소 `https://github.com/conewarrior/claude-toolkit`의 `skills/$ARGUMENTS.skill_name` 폴더를 현재 프로젝트의 `.claude/skills/`에 설치한다.
+GitHub 저장소 `https://github.com/conewarrior/siot-claude-toolkit`의 `skills/$ARGUMENTS.skill_name` 폴더를 현재 프로젝트의 `.claude/skills/`에 설치한다.
 
 - `.claude/skills/` 디렉토리 없으면 생성
 - GitHub API 또는 raw content로 해당 스킬 폴더의 모든 파일 다운로드

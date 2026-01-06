@@ -9,7 +9,14 @@
       "Skill(doc-coauthoring)",
       "Skill(frontend-design)",
       "Skill(pdf)",
-      "Skill(pptx)"
+      "Skill(pptx)",
+      "Bash(mv:*)",
+      "Bash(mkdir:*)",
+      "Bash(rmdir:*)",
+      "Bash(tree:*)",
+      "Bash(find:*)",
+      "Bash(git rm:*)",
+      "Bash(git remote set-url:*)"
     ]
   },
   "enableAllProjectMcpServers": true,

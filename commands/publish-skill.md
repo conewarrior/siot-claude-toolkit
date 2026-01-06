@@ -26,11 +26,11 @@ allowed-tools: Read, Bash, Glob
 # 각 파일에 대해
 for file in .claude/skills/$ARGUMENTS.skill_name/*; do
   filename=$(basename "$file")
-  gh api repos/conewarrior/claude-toolkit/contents/skills/$ARGUMENTS.skill_name/$filename \
+  gh api repos/conewarrior/siot-claude-toolkit/contents/skills/$ARGUMENTS.skill_name/$filename \
     -X PUT \
     -f message="Add/Update skill file: $ARGUMENTS.skill_name/$filename" \
     -f content="$(base64 < "$file")" \
-    -f sha="$(gh api repos/conewarrior/claude-toolkit/contents/skills/$ARGUMENTS.skill_name/$filename --jq '.sha' 2>/dev/null || echo '')"
+    -f sha="$(gh api repos/conewarrior/siot-claude-toolkit/contents/skills/$ARGUMENTS.skill_name/$filename --jq '.sha' 2>/dev/null || echo '')"
 done
 ```
 
@@ -50,7 +50,7 @@ publish-command와 동일하게 버전 bump.
 
 📦 마켓플레이스 버전: 1.0.1 → 1.0.2
 
-🔗 GitHub: https://github.com/conewarrior/claude-toolkit/tree/main/skills/$ARGUMENTS.skill_name
+🔗 GitHub: https://github.com/conewarrior/siot-claude-toolkit/tree/main/skills/$ARGUMENTS.skill_name
 ```
 
 ## 예시

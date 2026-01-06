@@ -13,7 +13,7 @@ skills/           # 스킬 (SKILL.md + 리소스 파일들)
 commands/         # 슬래시 커맨드 (.md)
 agents/           # 서브에이전트 (.md)
 hooks/            # Hook 설정 데이터 (hooks.json)
-SETUP.md          # 글로벌 설치 가이드
+.claude-plugin/   # 마켓플레이스 메타데이터
 ```
 
 ## 스킬 구조

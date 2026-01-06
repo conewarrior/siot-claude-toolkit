@@ -22,11 +22,11 @@ allowed-tools: Read, Bash, Glob
 
 ```bash
 # 파일 내용을 base64로 인코딩해서 업로드
-gh api repos/conewarrior/claude-toolkit/contents/commands/$ARGUMENTS.command_name.md \
+gh api repos/conewarrior/siot-claude-toolkit/contents/commands/$ARGUMENTS.command_name.md \
   -X PUT \
   -f message="Add/Update command: $ARGUMENTS.command_name" \
   -f content="$(base64 < .claude/commands/$ARGUMENTS.command_name.md)" \
-  -f sha="$(gh api repos/conewarrior/claude-toolkit/contents/commands/$ARGUMENTS.command_name.md --jq '.sha' 2>/dev/null || echo '')"
+  -f sha="$(gh api repos/conewarrior/siot-claude-toolkit/contents/commands/$ARGUMENTS.command_name.md --jq '.sha' 2>/dev/null || echo '')"
 ```
 
 주의: sha는 파일이 이미 존재할 때만 필요. 새 파일이면 sha 파라미터 생략.
@@ -37,18 +37,18 @@ gh api repos/conewarrior/claude-toolkit/contents/commands/$ARGUMENTS.command_nam
 
 ```bash
 # 현재 버전 가져오기
-gh api repos/conewarrior/claude-toolkit/contents/.claude-plugin/marketplace.json \
+gh api repos/conewarrior/siot-claude-toolkit/contents/.claude-plugin/marketplace.json \
   --jq '.content' | base64 -d > /tmp/marketplace.json
 
 # 버전 업데이트 (1.0.0 -> 1.0.1)
 # jq로 version 필드 업데이트
 
 # 다시 업로드
-gh api repos/conewarrior/claude-toolkit/contents/.claude-plugin/marketplace.json \
+gh api repos/conewarrior/siot-claude-toolkit/contents/.claude-plugin/marketplace.json \
   -X PUT \
   -f message="Bump version for $ARGUMENTS.command_name" \
   -f content="$(base64 < /tmp/marketplace.json)" \
-  -f sha="$(gh api repos/conewarrior/claude-toolkit/contents/.claude-plugin/marketplace.json --jq '.sha')"
+  -f sha="$(gh api repos/conewarrior/siot-claude-toolkit/contents/.claude-plugin/marketplace.json --jq '.sha')"
 ```
 
 ### 4. 결과 출력
@@ -61,7 +61,7 @@ gh api repos/conewarrior/claude-toolkit/contents/.claude-plugin/marketplace.json
 
 📦 마켓플레이스 버전: 1.0.0 → 1.0.1
 
-🔗 GitHub: https://github.com/conewarrior/claude-toolkit/blob/main/commands/$ARGUMENTS.command_name.md
+🔗 GitHub: https://github.com/conewarrior/siot-claude-toolkit/blob/main/commands/$ARGUMENTS.command_name.md
 ```
 
 ## 예시
