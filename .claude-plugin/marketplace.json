@@ -6,7 +6,7 @@
   "plugins": [
     {
       "name": "claude-toolkit",
-      "source": ".",
+      "source": "./",
       "description": "Commands and skills collection for Claude Code",
       "version": "1.0.0"
     }
