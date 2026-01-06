@@ -1,0 +1,14 @@
+{
+  "name": "claude-toolkit-marketplace",
+  "owner": {
+    "name": "conewarrior"
+  },
+  "plugins": [
+    {
+      "name": "claude-toolkit",
+      "source": ".",
+      "description": "Commands and skills collection for Claude Code",
+      "version": "1.0.0"
+    }
+  ]
+}
