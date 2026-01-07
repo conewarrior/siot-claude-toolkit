@@ -1,0 +1,5 @@
+{
+  "name": "pdf",
+  "description": "PDF manipulation toolkit - extract text/tables, create, merge, split, and handle forms",
+  "version": "1.0.0"
+}

@@ -5,9 +5,39 @@
   },
   "plugins": [
     {
-      "name": "claude-toolkit",
-      "source": "./",
-      "description": "Commands and skills collection for Claude Code",
+      "name": "pdf",
+      "source": "./skills/pdf",
+      "description": "PDF manipulation toolkit - extract text/tables, create, merge, split, and handle forms",
+      "version": "1.0.0"
+    },
+    {
+      "name": "canvas-design",
+      "source": "./skills/canvas-design",
+      "description": "Create visual art, posters, and designs in .png and .pdf formats",
+      "version": "1.0.0"
+    },
+    {
+      "name": "pptx",
+      "source": "./skills/pptx",
+      "description": "PowerPoint presentation creation, editing, and analysis",
+      "version": "1.0.0"
+    },
+    {
+      "name": "frontend-design",
+      "source": "./skills/frontend-design",
+      "description": "Create distinctive, production-grade frontend interfaces with high design quality",
+      "version": "1.0.0"
+    },
+    {
+      "name": "doc-coauthoring",
+      "source": "./skills/doc-coauthoring",
+      "description": "Structured workflow for co-authoring documentation, proposals, and specs",
+      "version": "1.0.0"
+    },
+    {
+      "name": "toolkit-commands",
+      "source": "./commands",
+      "description": "Claude Code workflow commands - install skills/commands/agents, publish to marketplace",
       "version": "1.0.0"
     }
   ]
