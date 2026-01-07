@@ -17,11 +17,11 @@ description: 자주 쓰는 명령어 모음
 ## 개별 설치
 
 ```
-/install-skill <name>      # 스킬 설치 (예: /install-skill pdf)
-/install-command <name>    # 커맨드 설치 (예: /install-command cleanup-ui)
-/install-agent <name>      # 에이전트 설치
+/install-skill <name>      # GitHub에서 스킬 다운로드 + Hook/권한 자동 등록
+/install-command <name>    # GitHub에서 커맨드 다운로드
+/install-agent <name>      # GitHub에서 에이전트 다운로드
 /global-hooks              # Hook과 권한을 글로벌에 설치
-/register-skill <name>     # 설치된 스킬의 Hook/권한 등록
+/register-skill <name>     # 직접 만든 로컬 스킬의 Hook/권한 등록
 ```
 
 ## 업로드 (기여자용)
