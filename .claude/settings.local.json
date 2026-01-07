@@ -16,7 +16,11 @@
       "Bash(tree:*)",
       "Bash(find:*)",
       "Bash(git rm:*)",
-      "Bash(git remote set-url:*)"
+      "Bash(git remote set-url:*)",
+      "Bash(claude -p \"/plugin marketplace add conewarrior/siot-claude-toolkit\")",
+      "Bash(claude:*)",
+      "Bash(claude plugin --help:*)",
+      "Bash(cat:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
