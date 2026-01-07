@@ -13,20 +13,25 @@ allowed-tools: Read, Bash, Glob
 
 ## 실행 단계
 
-### 1. 로컬 파일 확인
+### 1. 커맨드 파일 확인 (프로젝트 → 전역 fallback)
 
-`.claude/commands/$ARGUMENTS.command_name.md` 파일이 존재하는지 확인.
-없으면 에러 출력하고 종료.
+다음 순서로 커맨드 파일을 찾는다:
+
+1. **프로젝트 경로**: `.claude/commands/$ARGUMENTS.command_name.md`
+2. **전역 경로** (프로젝트에 없으면): `~/.claude/commands/$ARGUMENTS.command_name.md`
+
+찾은 경로를 `$COMMAND_PATH`로 사용.
+두 경로 모두 없으면 에러 출력하고 종료.
 
 ### 2. GitHub에 커맨드 파일 업로드
 
-커맨드는 `toolkit-commands` 플러그인의 `commands/` 폴더에 업로드:
+`$COMMAND_PATH`를 `toolkit-commands` 플러그인의 `commands/` 폴더에 업로드:
 
 ```bash
 gh api repos/conewarrior/siot-claude-toolkit/contents/commands/commands/$ARGUMENTS.command_name.md \
   -X PUT \
   -f message="Add/Update command: $ARGUMENTS.command_name" \
-  -f content="$(base64 < .claude/commands/$ARGUMENTS.command_name.md)" \
+  -f content="$(base64 < $COMMAND_PATH)" \
   -f sha="$(gh api repos/conewarrior/siot-claude-toolkit/contents/commands/commands/$ARGUMENTS.command_name.md --jq '.sha' 2>/dev/null || echo '')"
 ```
 

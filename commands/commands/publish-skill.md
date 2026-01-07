@@ -13,17 +13,22 @@ allowed-tools: Read, Bash, Glob, Write
 
 ## 실행 단계
 
-### 1. 로컬 스킬 폴더 확인
+### 1. 스킬 폴더 확인 (프로젝트 → 전역 fallback)
 
-`.claude/skills/$ARGUMENTS.skill_name/` 폴더가 존재하는지 확인.
-최소한 `SKILL.md` 파일이 있어야 함.
+다음 순서로 스킬 폴더를 찾는다:
+
+1. **프로젝트 경로**: `.claude/skills/$ARGUMENTS.skill_name/`
+2. **전역 경로** (프로젝트에 없으면): `~/.claude/skills/$ARGUMENTS.skill_name/`
+
+찾은 경로를 `$SKILL_PATH`로 사용. 최소한 `SKILL.md` 파일이 있어야 함.
+두 경로 모두 없으면 에러 출력하고 종료.
 
 ### 2. plugin.json 확인 및 생성
 
-`.claude/skills/$ARGUMENTS.skill_name/.claude-plugin/plugin.json`이 없으면 자동 생성:
+`$SKILL_PATH/.claude-plugin/plugin.json`이 없으면 자동 생성:
 
 1. `SKILL.md`의 frontmatter에서 `name`, `description` 추출
-2. `.claude-plugin/plugin.json` 생성:
+2. `$SKILL_PATH/.claude-plugin/plugin.json` 생성:
    ```json
    {
      "name": "<skill_name>",
@@ -34,11 +39,11 @@ allowed-tools: Read, Bash, Glob, Write
 
 ### 3. 스킬 폴더의 모든 파일 업로드
 
-폴더 내 모든 파일을 순회하면서 GitHub에 업로드 (`.claude-plugin/plugin.json` 포함):
+`$SKILL_PATH` 폴더 내 모든 파일을 순회하면서 GitHub에 업로드 (`.claude-plugin/plugin.json` 포함):
 
 ```bash
 # 일반 파일 업로드
-for file in .claude/skills/$ARGUMENTS.skill_name/*; do
+for file in $SKILL_PATH/*; do
   [ -f "$file" ] || continue
   filename=$(basename "$file")
   gh api repos/conewarrior/siot-claude-toolkit/contents/skills/$ARGUMENTS.skill_name/$filename \
@@ -52,7 +57,7 @@ done
 gh api repos/conewarrior/siot-claude-toolkit/contents/skills/$ARGUMENTS.skill_name/.claude-plugin/plugin.json \
   -X PUT \
   -f message="Add/Update plugin.json for $ARGUMENTS.skill_name" \
-  -f content="$(base64 < .claude/skills/$ARGUMENTS.skill_name/.claude-plugin/plugin.json)" \
+  -f content="$(base64 < $SKILL_PATH/.claude-plugin/plugin.json)" \
   -f sha="$(gh api repos/conewarrior/siot-claude-toolkit/contents/skills/$ARGUMENTS.skill_name/.claude-plugin/plugin.json --jq '.sha' 2>/dev/null || echo '')"
 ```
 
