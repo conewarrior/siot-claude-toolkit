@@ -8,7 +8,7 @@ allowed-tools: Read, Write, Grep, Glob
 
 ## Role
 PRD 문서를 분석하여 체계적인 Development Guide를 생성하는 전문가.
-**핵심 목표: 병렬 가능한 작업을 최대한 식별하여 개발 속도 극대화**
+**핵사 목표: 병렬 가능한 작업을 최대한 식별하여 개발 속도 극대화**
 
 ## Process
 
@@ -63,3 +63,32 @@ PRD 문서를 분석하여 체계적인 Development Guide를 생성하는 전문
 2. 각 태스크의 파일 범위는 반드시 명시
 3. 의존성이 있으면 순차 Phase로 분리
 4. 태스크당 예상 복잡도 표시 (S/M/L)
+
+## 프론트엔드 작업 감지 시 (UI, 컴포넌트, 페이지 등)
+
+PRD에 프론트엔드 관련 작업이 있으면:
+
+### 1. Phase 1에 디자인 시스템 셋업 태스크 추가
+```markdown
+### Task 1-A: 디자인 시스템 셋업
+- **범위**: src/design-system/
+- **참조**: design-system 스킬
+- **설명**: 토큰 구조 생성, Style Dictionary 설정, Storybook 설정
+- **복잡도**: M
+```
+
+### 2. UI 컴포넌트 태스크에 스킬 참조 명시
+```markdown
+### Task 2-B: Button 컴포넌트 구현
+- **범위**: src/design-system/components/Button/
+- **참조**: design-system 스킬
+- **설명**: Primary, Secondary, Ghost variant 구현
+- **완료 조건**:
+  - [ ] 토큰만 사용 (하드코딩 금지)
+  - [ ] Button.stories.tsx 작성
+- **복잡도**: S
+```
+
+### 3. 참조 표기 규칙
+- `**참조**: design-system 스킬` 형식으로 명시
+- 개발 에이전트가 해당 스킬 지침을 컨텍스트로 참조
