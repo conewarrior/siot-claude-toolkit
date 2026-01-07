@@ -1,0 +1,5 @@
+{
+  "name": "codify",
+  "description": "개발 과정에서 학습한 패턴과 규칙을 CLAUDE.md에 명문화. MUST BE USED after review phase.",
+  "version": "1.0.0"
+}
