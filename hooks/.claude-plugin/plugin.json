@@ -1,0 +1,6 @@
+{
+  "name": "notification-hooks",
+  "description": "Claude Code notification hooks for macOS",
+  "version": "1.0.0",
+  "hooks": "./hooks.json"
+}
