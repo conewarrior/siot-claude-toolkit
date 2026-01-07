@@ -1,0 +1,5 @@
+{
+  "name": "reviewer",
+  "description": "개발 완료 후 코드 품질 검토, 문제점 식별, 단순화 수행. Use PROACTIVELY after development tasks complete.",
+  "version": "1.0.0"
+}
