@@ -45,6 +45,24 @@
       "source": "./skills/blog-writer",
       "description": "siot 블로그 글 작성 가이드. 튜토리얼/경험 공유 스타일의 기술 블로그 작성.",
       "version": "1.0.0"
+    },
+    {
+      "name": "codify",
+      "source": "./agents/codify",
+      "description": "개발 과정에서 학습한 패턴과 규칙을 CLAUDE.md에 명문화. MUST BE USED after review phase.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "prd-to-dev",
+      "source": "./agents/prd-to-dev",
+      "description": "PRD 문서를 읽고 병렬 작업이 명시된 Development Guide를 생성. MUST BE USED when creating development plans.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "reviewer",
+      "source": "./agents/reviewer",
+      "description": "개발 완료 후 코드 품질 검토, 문제점 식별, 단순화 수행. Use PROACTIVELY after development tasks complete.",
+      "version": "1.0.0"
     }
   ]
 }
