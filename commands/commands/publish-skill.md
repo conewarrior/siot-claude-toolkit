@@ -78,7 +78,16 @@ GitHub에서 `.claude-plugin/marketplace.json`을 가져와서:
 3. 있으면 version bump (patch)
 4. 업데이트된 marketplace.json을 GitHub에 업로드
 
-### 5. 결과 출력
+### 5. 로컬 settings.json에 플러그인 활성화
+
+`~/.claude/settings.json`의 `enabledPlugins`에 자동 등록:
+
+```bash
+# settings.json 읽어서 enabledPlugins에 추가
+jq '.enabledPlugins["$ARGUMENTS.skill_name@claude-toolkit-marketplace"] = true' ~/.claude/settings.json > /tmp/settings.json && mv /tmp/settings.json ~/.claude/settings.json
+```
+
+### 6. 결과 출력
 
 ```
 ✅ 스킬 업로드 완료: $ARGUMENTS.skill_name
@@ -92,7 +101,7 @@ GitHub에서 `.claude-plugin/marketplace.json`을 가져와서:
 
 🔗 GitHub: https://github.com/conewarrior/siot-claude-toolkit/tree/main/skills/$ARGUMENTS.skill_name
 
-💡 설치: /plugin install $ARGUMENTS.skill_name@claude-toolkit-marketplace
+✨ 로컬 활성화: $ARGUMENTS.skill_name@claude-toolkit-marketplace (새 세션에서 적용)
 ```
 
 ## 예시
