@@ -1,5 +1,5 @@
 {
   "name": "prd-to-dev",
   "description": "PRD 문서를 읽고 병렬 작업이 명시된 Development Guide를 생성. MUST BE USED when creating development plans.",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
