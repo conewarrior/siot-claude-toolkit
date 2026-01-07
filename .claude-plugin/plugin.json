@@ -1,5 +1,6 @@
 {
   "name": "claude-toolkit",
   "description": "Collection of commands and skills for Claude Code workflow",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "hooks": "./hooks/hooks.json"
 }

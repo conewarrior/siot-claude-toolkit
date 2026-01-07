@@ -20,7 +20,8 @@
       "Bash(claude -p \"/plugin marketplace add conewarrior/siot-claude-toolkit\")",
       "Bash(claude:*)",
       "Bash(claude plugin --help:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git pull:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
