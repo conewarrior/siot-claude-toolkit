@@ -7,11 +7,30 @@ description: siot 블로그 글 작성 가이드. 튜토리얼/경험 공유 스
 
 siot 포트폴리오 블로그에 올릴 글을 작성하는 스킬입니다.
 
-## 블로그 파일 형식
+## 블로그 폴더 구조
 
-**위치**: `docs/content/blog/[slug].mdx`
+각 블로그 글은 **폴더** 단위로 관리합니다:
 
-**Frontmatter**:
+```
+docs/content/blog/
+├── github-api-claude-commands/
+│   ├── index.mdx          # 본문
+│   └── images/            # 이미지 폴더
+│       ├── before.png
+│       └── after.png
+├── jsdelivr-cdn-image-upload/
+│   ├── index.mdx
+│   └── images/
+│       └── diagram.png
+└── ...
+```
+
+**폴더명**: 영어 케밥케이스 (예: `my-new-post`)
+**본문 파일**: `index.mdx`
+**이미지 폴더**: `images/` (필요시 생성)
+
+## Frontmatter
+
 ```yaml
 ---
 title: "제목"
@@ -21,6 +40,18 @@ category: "개발"  # "디자인" | "개발"
 published: true
 ---
 ```
+
+## 이미지 사용법
+
+이미지는 해당 글의 `images/` 폴더에 저장하고, **상대 경로**로 참조:
+
+```markdown
+![설명](./images/screenshot.png)
+```
+
+커밋 시 pre-commit hook이 자동으로:
+1. 로컬 이미지를 GitHub에 업로드
+2. 경로를 jsDelivr CDN URL로 변환
 
 ## 글 구조 (튜토리얼 스타일)
 
@@ -35,7 +66,7 @@ published: true
 - 어떤 한계가 있었는지
 
 ```
-[📸 기존 방식 스크린샷]
+![기존 방식](./images/before.png)
 ```
 
 ### 3. 개선 과정 (Journey)
@@ -49,7 +80,7 @@ published: true
 - 달라진 점
 
 ```
-[📸 개선된 방식 스크린샷]
+![새로운 방식](./images/after.png)
 ```
 
 ### 5. 마무리
@@ -66,20 +97,30 @@ published: true
 
 ## 이미지 캡쳐 포인트
 
-글 작성 시 아래 시점에 `[📸 설명]` 마커를 넣어주세요:
+글 작성 시 아래 시점의 스크린샷을 `images/` 폴더에 저장:
 
-1. **기존 방식** - Before 상태
-2. **문제 상황** - 불편함이 드러나는 화면
-3. **새로운 방식** - After 상태
-4. **결과** - 최종 동작 화면
+1. **before.png** - 기존 방식/문제 상황
+2. **after.png** - 개선된 방식/결과
+3. **diagram.png** - 구조 설명 (필요시)
+4. **screenshot-N.png** - 추가 스크린샷
 
-## 예시 구조
+## 예시
 
+### 폴더 구조
+```
+docs/content/blog/github-api-claude-commands/
+├── index.mdx
+└── images/
+    ├── clone-workflow.png
+    └── api-workflow.png
+```
+
+### index.mdx
 ```markdown
 ---
 title: "GitHub API로 Claude Code 커맨드 관리하기"
 description: "로컬 클론 없이 커맨드를 설치하고 배포하는 방법"
-date: "2025-01-06"
+date: "2026-01-06"
 category: "개발"
 published: true
 ---
@@ -89,7 +130,7 @@ published: true
 Claude Code에서 커맨드를 여러 컴퓨터에서 공유하고 싶었다.
 처음에는 GitHub 저장소를 클론해서 썼다...
 
-[📸 기존: 저장소 클론 후 수동 복사하는 과정]
+![기존: 저장소 클론 후 수동 복사](./images/clone-workflow.png)
 
 ## 개선 아이디어
 
@@ -100,15 +141,17 @@ Claude Code에서 커맨드를 여러 컴퓨터에서 공유하고 싶었다.
 
 이제 `/install-command` 하나로 바로 설치할 수 있다.
 
-[📸 개선: 커맨드 한 줄로 설치되는 모습]
+![개선: API로 직접 설치](./images/api-workflow.png)
 
 ## 배운 점
 
 로컬 상태에 의존하지 않는 워크플로우가...
 ```
 
-## 슬러그 네이밍
+## 새 글 작성 체크리스트
 
-파일명은 영어 케밥케이스로:
-- `github-api-claude-commands.mdx`
-- `improving-dev-workflow.mdx`
+1. [ ] `docs/content/blog/[slug]/` 폴더 생성
+2. [ ] `index.mdx` 작성
+3. [ ] 이미지가 있으면 `images/` 폴더에 저장
+4. [ ] 이미지 경로는 `./images/파일명.png` 형식
+5. [ ] frontmatter의 date를 오늘 날짜로 (YYYY-MM-DD)
