@@ -38,7 +38,7 @@
       "name": "toolkit-commands",
       "source": "./commands",
       "description": "Claude Code workflow commands - install skills/commands/agents, publish to marketplace",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "name": "blog-writer",
