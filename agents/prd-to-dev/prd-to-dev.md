@@ -92,3 +92,34 @@ PRD에 프론트엔드 관련 작업이 있으면:
 ### 3. 참조 표기 규칙
 - `**참조**: design-system 스킬` 형식으로 명시
 - 개발 에이전트가 해당 스킬 지침을 컨텍스트로 참조
+
+### 4. 컴포넌트 명세 섹션 (필수)
+프론트엔드 작업이 있으면 Development Guide에 다음 섹션 포함:
+
+```markdown
+## 필요 컴포넌트
+
+### 신규 생성
+| 컴포넌트 | 위치 | 설명 | Props | Storybook |
+|----------|------|------|-------|-----------|
+| MovieRating | @/components/movie | 별점 표시 | rating: number, size?: 'sm' \| 'md' | 필수 |
+
+### 기존 활용
+| 컴포넌트 | 위치 | 용도 |
+|----------|------|------|
+| Card | @/design-system | 영화 카드 컨테이너 |
+| Button | @/design-system | CTA 버튼 |
+```
+
+**작성 규칙:**
+1. 신규 컴포넌트는 Props 명세까지 포함
+2. 기존 컴포넌트는 `src/design-system/COMPONENTS.mdx` 인벤토리에서 확인
+3. 2개+ 페이지 재사용 예상 시 `@/design-system`에 배치
+4. 도메인 특화 컴포넌트는 `@/components/{domain}`에 배치
+
+### 5. 컴포넌트 우선 개발 순서
+Phase 구성 시 다음 순서 권장:
+1. **Phase 1**: 디자인 시스템 셋업 + 공용 컴포넌트
+2. **Phase 2**: 도메인 컴포넌트 (Storybook 검증)
+3. **Phase 3**: 페이지 통합 (검증된 컴포넌트 조립)
+4. **Phase 4**: API 연동 + 최종 테스트
