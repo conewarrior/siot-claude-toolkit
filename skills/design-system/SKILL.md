@@ -259,21 +259,61 @@ module.exports = {
 
 ---
 
-## 7. 체크리스트
+## 7. 컴포넌트 인벤토리 관리
+
+### 인벤토리 파일
+`src/design-system/COMPONENTS.mdx` - Storybook에서 볼 수 있는 프로젝트 전체 컴포넌트 목록
+
+### 인벤토리 구조
+```markdown
+| 컴포넌트 | 설명 | Storybook | 사용 페이지 |
+|----------|------|-----------|------------|
+| Button   | 기본 버튼 | ✅ | 전체 |
+```
+
+### 필수 업데이트 시점
+1. **새 컴포넌트 생성 시**: 해당 섹션에 즉시 추가
+2. **컴포넌트 삭제 시**: 인벤토리에서 제거
+3. **사용처 변경 시**: 사용 페이지 컬럼 업데이트
+4. **Storybook 추가 시**: ❌ → ✅ 변경
+5. **기능 개발 완료 시**: Last Updated 날짜 갱신
+
+### 카테고리 분류
+| 카테고리 | 경로 | 기준 |
+|----------|------|------|
+| Design System | `@/design-system` | 2개+ 페이지 재사용 |
+| 도메인 | `@/components/{domain}` | 특정 서비스 전용 |
+| 공통 | `@/components/common` | 레이아웃, 네비게이션 |
+| Provider | `@/components/providers` | 컨텍스트 제공 |
+
+### 주기적 점검 (월 1회 권장)
+- Storybook 커버리지 확인 (목표: 80%+)
+- 미사용 컴포넌트 정리
+- 중복 컴포넌트 통합 검토
+
+---
+
+## 8. 체크리스트
 
 ### 프로젝트 시작 시
 - [ ] design-system 폴더 구조 생성
 - [ ] primitive 토큰 정의 (colors, spacing, radius)
 - [ ] Style Dictionary 설정
 - [ ] Storybook 설정
+- [ ] COMPONENTS.mdx 인벤토리 파일 생성
 
 ### 컴포넌트 생성 시
 - [ ] 토큰만 사용했는가?
 - [ ] Story 파일 작성했는가?
 - [ ] 필요한 variant 정의했는가?
 - [ ] export를 index.ts에 추가했는가?
+- [ ] **COMPONENTS.mdx에 등록했는가?**
 
 ### 토큰 변경 시
 - [ ] primitive 변경이면 영향 범위 확인
 - [ ] Storybook에서 전체 컴포넌트 확인
 - [ ] 빌드 스크립트 실행
+
+### 기능 개발 완료 시
+- [ ] 인벤토리 업데이트 (새 컴포넌트, 사용처 변경)
+- [ ] Last Updated 날짜 갱신
