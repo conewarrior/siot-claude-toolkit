@@ -1,0 +1,69 @@
+name: Sync Plugin Versions to Marketplace
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/plugin.json'
+      - '!.claude-plugin/plugin.json'
+
+jobs:
+  sync-versions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync versions to marketplace.json
+        run: |
+          # marketplace.json 경로
+          MARKETPLACE=".claude-plugin/marketplace.json"
+
+          # 변경 여부 추적
+          CHANGED=false
+
+          # 각 플러그인 폴더의 plugin.json에서 버전 읽어서 marketplace.json 업데이트
+          for plugin_json in $(find . -path "./.claude-plugin" -prune -o -name "plugin.json" -print 2>/dev/null | grep -v "^./.claude-plugin"); do
+            if [ -f "$plugin_json" ]; then
+              # plugin.json에서 name과 version 추출
+              PLUGIN_NAME=$(jq -r '.name' "$plugin_json")
+              PLUGIN_VERSION=$(jq -r '.version' "$plugin_json")
+
+              if [ "$PLUGIN_NAME" != "null" ] && [ "$PLUGIN_VERSION" != "null" ]; then
+                # marketplace.json에서 현재 버전 확인
+                CURRENT_VERSION=$(jq -r --arg name "$PLUGIN_NAME" '.plugins[] | select(.name == $name) | .version' "$MARKETPLACE")
+
+                if [ "$CURRENT_VERSION" != "$PLUGIN_VERSION" ] && [ "$CURRENT_VERSION" != "null" ] && [ -n "$CURRENT_VERSION" ]; then
+                  echo "Updating $PLUGIN_NAME: $CURRENT_VERSION -> $PLUGIN_VERSION"
+
+                  # marketplace.json 업데이트
+                  jq --arg name "$PLUGIN_NAME" --arg version "$PLUGIN_VERSION" \
+                    '(.plugins[] | select(.name == $name) | .version) = $version' \
+                    "$MARKETPLACE" > tmp.json && mv tmp.json "$MARKETPLACE"
+
+                  CHANGED=true
+                fi
+              fi
+            fi
+          done
+
+          # 변경사항 출력
+          if [ "$CHANGED" = true ]; then
+            echo "marketplace.json updated:"
+            cat "$MARKETPLACE"
+            echo "CHANGED=true" >> $GITHUB_ENV
+          else
+            echo "No version changes detected"
+            echo "CHANGED=false" >> $GITHUB_ENV
+          fi
+
+      - name: Commit and push if changed
+        if: env.CHANGED == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .claude-plugin/marketplace.json
+          git commit -m "chore: sync plugin versions to marketplace.json"
+          git push
