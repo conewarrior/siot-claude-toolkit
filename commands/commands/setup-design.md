@@ -1,6 +1,6 @@
 # /setup-design
 
-프로젝트에 @geniefy/ui 디자인 시스템을 자동 설정합니다.
+프로젝트에 @design-geniefy/ui 디자인 시스템을 자동 설정합니다.
 
 **한 번 실행으로 완료되는 항목:**
 - npm 패키지 설치
@@ -19,24 +19,24 @@
 ### Step 2: npm 패키지 설치 (Node.js 프로젝트)
 package.json이 있으면 실행:
 ```bash
-npm install @geniefy/ui
+npm install @design-geniefy/ui
 ```
 
 ### Step 2.5: 토큰 import 추가
 
 **Next.js 프로젝트** (`app/layout.tsx`에 추가):
 ```tsx
-import '@geniefy/ui/tokens.css';
+import '@design-geniefy/ui/tokens.css';
 ```
 
 **React (CRA/Vite)** (`src/index.tsx` 또는 `src/main.tsx`에 추가):
 ```tsx
-import '@geniefy/ui/tokens.css';
+import '@design-geniefy/ui/tokens.css';
 ```
 
 **HTML/CSS 프로젝트** (`<head>`에 추가):
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/geniefy/design-system/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/conewarrior/design-system/tokens.css">
 ```
 
 ### Step 3: CLAUDE.md 설정
@@ -46,10 +46,10 @@ import '@geniefy/ui/tokens.css';
 ```markdown
 ## 디자인 시스템
 
-이 프로젝트는 @geniefy/ui 디자인 시스템을 사용합니다.
+이 프로젝트는 @design-geniefy/ui 디자인 시스템을 사용합니다.
 
 ### 토큰
-- CDN: https://cdn.jsdelivr.net/gh/geniefy/design-system/tokens.css
+- CDN: https://cdn.jsdelivr.net/gh/conewarrior/design-system/tokens.css
 - 모든 색상, 간격, radius는 tokens.css의 CSS 변수 사용 필수
 
 ### 규칙 (자동 적용)
@@ -75,7 +75,7 @@ components/ 폴더에 새 컴포넌트 생성 시 자동으로 design-system 저
     "UserPromptSubmit": [
       {
         "matcher": "UI|컴포넌트|버튼|카드|폼|레이아웃|스타일|CSS|디자인",
-        "command": "cat node_modules/@geniefy/ui/.claude/skills/design-rules.md"
+        "command": "cat node_modules/@design-geniefy/ui/.claude/skills/design-rules.md"
       }
     ],
     "PostToolUse": [
@@ -92,23 +92,47 @@ components/ 폴더에 새 컴포넌트 생성 시 자동으로 design-system 저
 - `UserPromptSubmit`: UI 관련 키워드 입력 시 **node_modules에서** design-rules.md 로딩 (npm 업데이트 시 자동 반영)
 - `PostToolUse`: components/ 변경 시 자동 기여
 
-### Step 5: GitHub 토큰 확인
+### Step 5: GitHub 토큰 확인 (자동 기여 기능)
 GITHUB_TOKEN 환경변수가 설정되어 있는지 확인합니다.
-없으면 설정 방법을 안내합니다:
 
+**토큰이 있으면:**
 ```
-⚠️ GITHUB_TOKEN이 설정되지 않았습니다.
-
-자동 기여 기능을 사용하려면 GitHub Personal Access Token을 설정하세요:
-
-1. https://github.com/settings/tokens 에서 토큰 생성
-2. 권한: repo (전체)
-3. 환경변수 설정:
-   export GITHUB_TOKEN="your_token_here"
-
-   또는 ~/.zshrc에 추가:
-   echo 'export GITHUB_TOKEN="your_token_here"' >> ~/.zshrc
+✅ GITHUB_TOKEN 감지됨 - 자동 기여 기능 활성화
 ```
+
+**토큰이 없으면 AskUserQuestion으로 물어봅니다:**
+
+질문: "자동 기여 기능을 설정하시겠습니까?"
+- **지금 설정** (권장): 토큰 생성 가이드를 따라 바로 설정
+- **나중에 설정**: 설정 스킵, 나중에 수동으로 설정 가능
+- **사용 안 함**: auto-contribute Hook 제거
+
+**"지금 설정" 선택 시:**
+```
+🔧 GitHub Token 설정 가이드
+
+1. 토큰 생성 페이지 열기:
+   https://github.com/settings/tokens/new
+
+2. 설정값:
+   - Note: design-system-auto-contribute
+   - Expiration: No expiration (또는 원하는 기간)
+   - ✅ repo (전체 체크)
+
+3. "Generate token" 클릭 후 토큰 복사
+
+4. 터미널에서 실행:
+   echo 'export GITHUB_TOKEN="복사한_토큰"' >> ~/.zshrc
+   source ~/.zshrc
+
+5. 설정 확인:
+   echo $GITHUB_TOKEN
+
+완료 후 /setup-design 다시 실행하면 자동 기여가 활성화됩니다.
+```
+
+**"사용 안 함" 선택 시:**
+PostToolUse Hook에서 auto-contribute 부분을 제거합니다.
 
 ### Step 6: 자동 업데이트 설정 (Dependabot)
 `.github/` 폴더에 자동 업데이트 설정 파일들을 생성합니다.
@@ -129,7 +153,7 @@ updates:
       time: "09:00"
       timezone: "Asia/Seoul"
     allow:
-      - dependency-name: "@geniefy/ui"
+      - dependency-name: "@design-geniefy/ui"
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
@@ -157,11 +181,11 @@ jobs:
     if: github.actor == 'dependabot[bot]'
 
     steps:
-      - name: Check if @geniefy/ui update
+      - name: Check if @design-geniefy/ui update
         id: check
         run: |
           TITLE="${{ github.event.pull_request.title }}"
-          if [[ "$TITLE" == *"@geniefy/ui"* ]]; then
+          if [[ "$TITLE" == *"@design-geniefy/ui"* ]]; then
             echo "is_geniefy_ui=true" >> $GITHUB_OUTPUT
           else
             echo "is_geniefy_ui=false" >> $GITHUB_OUTPUT
@@ -208,7 +232,7 @@ jobs:
           Breaking change가 포함되어 있을 수 있습니다.
           수동 리뷰 후 머지해 주세요.
 
-          - [CHANGELOG 확인](https://github.com/geniefy/design-system/blob/main/CHANGELOG.md)"
+          - [CHANGELOG 확인](https://github.com/conewarrior/design-system/blob/main/CHANGELOG.md)"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -217,10 +241,10 @@ jobs:
 ### Step 7: 완료 메시지
 
 ```
-✅ @geniefy/ui 디자인 시스템 설정 완료!
+✅ @design-geniefy/ui 디자인 시스템 설정 완료!
 
 설치된 항목:
-- npm 패키지: @geniefy/ui
+- npm 패키지: @design-geniefy/ui
 - CLAUDE.md: 디자인 규칙 추가됨
 - Hook: UI 생성 시 node_modules에서 design-rules.md 자동 로드
 - Hook: 컴포넌트 변경 시 자동 기여
@@ -232,7 +256,7 @@ jobs:
   ✓ 컴포넌트, design-rules.md, tokens.css 모두 자동 업데이트
 
 토큰 참조:
-- CDN: https://cdn.jsdelivr.net/gh/geniefy/design-system/tokens.css
+- CDN: https://cdn.jsdelivr.net/gh/conewarrior/design-system/tokens.css
 - 문서: https://design.geniefy.ai (또는 localhost:3333)
 ```
 
