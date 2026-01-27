@@ -38,13 +38,13 @@
       "name": "toolkit-commands",
       "source": "./commands",
       "description": "Claude Code workflow commands - install skills/commands/agents, publish to marketplace",
-      "version": "1.0.9"
+      "version": "1.0.10"
     },
     {
       "name": "blog-writer",
       "source": "./skills/blog-writer",
       "description": "siot 블로그 글 작성 가이드. 튜토리얼/경험 공유 스타일의 기술 블로그 작성.",
-      "version": "1.0.1"
+      "version": "1.0.0"
     },
     {
       "name": "codify",
