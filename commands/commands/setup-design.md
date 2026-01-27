@@ -12,12 +12,26 @@
 
 ## 실행 단계
 
-### Step 1: 프로젝트 타입 감지
-- package.json 존재 여부 확인
-- Node.js 프로젝트인지 HTML/CSS 프로젝트인지 구분
+### Step 1: 프로젝트 타입 확인
+
+**package.json이 있으면:**
+→ Node.js 프로젝트로 진행 (Step 2로)
+
+**package.json이 없으면:**
+AskUserQuestion으로 물어봅니다:
+
+질문: "프로젝트 타입을 선택하세요"
+- **Node.js 프로젝트** (권장): npm 패키지 설치 (package.json 자동 생성)
+- **HTML/CSS만**: CDN 링크만 사용 (npm 설치 없음)
 
 ### Step 2: npm 패키지 설치 (Node.js 프로젝트)
-package.json이 있으면 실행:
+
+**package.json이 없으면 먼저 생성:**
+```bash
+npm init -y
+```
+
+**패키지 설치:**
 ```bash
 npm install @design-geniefy/ui
 ```
