@@ -74,14 +74,14 @@ components/ 폴더에 새 컴포넌트 생성 시 자동으로 design-system 저
   "hooks": {
     "UserPromptSubmit": [
       {
-        "matcher": "UI|컴포넌트|버튼|카드|폼|레이아웃|스타일|CSS|디자인",
-        "command": "cat node_modules/@design-geniefy/ui/.claude/skills/design-rules.md"
+        "matcher": {"prompt_contains": "UI|컴포넌트|버튼|카드|폼|레이아웃|스타일|CSS|디자인"},
+        "hooks": [{"type": "command", "command": "cat node_modules/@design-geniefy/ui/.claude/skills/design-rules.md"}]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Write|Edit",
-        "command": "if [[ \"$CLAUDE_TOOL_ARG_file_path\" == *\"components/\"* ]]; then .claude/scripts/auto-contribute.sh \"$CLAUDE_TOOL_ARG_file_path\"; fi"
+        "matcher": {"tools": ["Write", "Edit"]},
+        "hooks": [{"type": "command", "command": "if [[ \"$CLAUDE_TOOL_ARG_file_path\" == *\"components/\"* ]]; then .claude/scripts/auto-contribute.sh \"$CLAUDE_TOOL_ARG_file_path\"; fi"}]
       }
     ]
   }
@@ -90,7 +90,7 @@ components/ 폴더에 새 컴포넌트 생성 시 자동으로 design-system 저
 
 **Hook 설명:**
 - `UserPromptSubmit`: UI 관련 키워드 입력 시 **node_modules에서** design-rules.md 로딩 (npm 업데이트 시 자동 반영)
-- `PostToolUse`: components/ 변경 시 자동 기여
+- `PostToolUse`: Write/Edit 도구 사용 시 components/ 변경 감지하여 자동 기여
 
 ### Step 5: GitHub 토큰 확인 (자동 기여 기능)
 GITHUB_TOKEN 환경변수가 설정되어 있는지 확인합니다.
