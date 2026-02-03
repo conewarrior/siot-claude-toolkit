@@ -1,0 +1,8 @@
+{
+  "name": "toolkit-skills",
+  "version": "1.0.1",
+  "description": "AI 개발을 위한 스킬 모음",
+  "skills": [
+    "design-rules"
+  ]
+}
