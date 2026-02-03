@@ -98,6 +98,77 @@ import '@design-geniefy/ui/tokens.css';
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/conewarrior/design-system/tokens.css">
 ```
 
+### Step 2.6: Tailwind v4 설치 (shadcn/ui 사용 시)
+
+> shadcn/ui 컴포넌트를 사용하려면 Tailwind CSS v4가 필요합니다.
+> tokens.css의 값을 @theme으로 매핑하여 shadcn 컴포넌트가 디자인 토큰을 사용하도록 합니다.
+
+**AskUserQuestion으로 확인:**
+```
+질문: "Tailwind CSS v4를 설치하시겠습니까?"
+- **설치** (권장): shadcn/ui 컴포넌트 사용 가능
+- **건너뛰기**: 기존 CSS 방식 유지
+```
+
+**"설치" 선택 시:**
+
+1. **패키지 설치:**
+```bash
+npm install tailwindcss@latest @tailwindcss/postcss@latest
+```
+
+2. **postcss.config.mjs 생성:**
+```javascript
+export default {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+```
+
+3. **globals.css (또는 메인 CSS 파일)에 Tailwind 추가:**
+
+tokens.css import 다음에 추가:
+```css
+/* Tailwind CSS v4 */
+@import "tailwindcss";
+
+/* Tailwind Theme - tokens.css 변수를 Tailwind 테마에 매핑 */
+@theme {
+  /* Colors - shadcn compatible */
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-foreground: var(--color-secondary-foreground);
+  --color-muted: var(--color-muted);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
+  --color-destructive: var(--color-destructive);
+  --color-destructive-foreground: var(--color-destructive-foreground);
+  --color-border: var(--color-border);
+  --color-input: var(--color-input);
+  --color-ring: var(--color-ring);
+
+  /* Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+  --radius-full: var(--radius-full);
+
+  /* Font Family */
+  --font-sans: var(--font-family-sans);
+  --font-mono: var(--font-family-mono);
+}
+```
+
+> 💡 **참고**: Tailwind v4는 CSS-first 설정 방식을 사용합니다.
+> `tailwind.config.js` 대신 `@theme` 블록에서 테마를 정의합니다.
+
 ### Step 3: CLAUDE.md 설정
 기존 CLAUDE.md를 읽고, 없으면 새로 생성합니다.
 다음 내용을 CLAUDE.md에 추가합니다:
@@ -588,6 +659,14 @@ else
   echo -e "${YELLOW}⚠️ Dependabot: 미설정 (선택사항)${NC}"
 fi
 
+# 8. ESLint 설정 확인
+if [ -f "eslint.config.mjs" ] && grep -q "no-restricted-syntax" "eslint.config.mjs" 2>/dev/null; then
+  echo -e "${GREEN}✅ ESLint: 페이지 컴포넌트 정의 금지 규칙 설정됨${NC}"
+else
+  echo -e "${RED}❌ ESLint: 페이지 컴포넌트 정의 금지 규칙 미설정${NC}"
+  MISSING=$((MISSING + 1))
+fi
+
 # 결과 출력
 echo "---"
 if [ $MISSING -eq 0 ]; then
@@ -604,7 +683,60 @@ exit $MISSING
 chmod +x .claude/scripts/verify-design-setup.sh
 ```
 
-### Step 4.8: 상태 추적 파일 생성
+### Step 4.8: ESLint 설정 (페이지 내 컴포넌트 정의 금지)
+
+page.tsx 파일에서 로컬 컴포넌트를 직접 정의하는 것을 방지하는 ESLint 규칙을 설정합니다.
+
+**1. ESLint 의존성 설치:**
+```bash
+npm install -D @eslint/js typescript-eslint eslint
+```
+
+**2. `eslint.config.mjs` 생성:**
+```javascript
+import js from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    files: ['app/**/page.tsx', 'src/**/page.tsx'],
+    rules: {
+      // 페이지 파일에서 로컬 컴포넌트 정의 금지 (Page 컴포넌트 제외)
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'FunctionDeclaration[id.name=/^[A-Z]/]:not(ExportDefaultDeclaration > FunctionDeclaration):not([id.name=/Page$/])',
+          message: '❌ 페이지 파일에서 컴포넌트를 직접 정의하지 마세요. @components/ 또는 ui/에서 import하세요.',
+        },
+        {
+          selector: 'VariableDeclarator[id.name=/^[A-Z]/][init.type="ArrowFunctionExpression"]:not([id.name=/Page$/])',
+          message: '❌ 페이지 파일에서 컴포넌트를 직접 정의하지 마세요. @components/ 또는 ui/에서 import하세요.',
+        },
+      ],
+    },
+  },
+);
+```
+
+**3. package.json scripts 업데이트:**
+기존 lint 스크립트를 확인하고 없으면 추가:
+```json
+{
+  "scripts": {
+    "lint": "eslint app/**/page.tsx",
+    "lint:fix": "eslint app/**/page.tsx --fix"
+  }
+}
+```
+
+**목적:**
+- page.tsx 파일에 하드코딩된 컴포넌트가 있으면 ESLint 에러 발생
+- `npm run lint`로 검증 가능
+- CI/CD에서도 자동 검증
+
+### Step 4.9: 상태 추적 파일 생성
 `.claude/design-system-state.json` 파일을 생성합니다:
 
 ```json
@@ -623,9 +755,18 @@ chmod +x .claude/scripts/verify-design-setup.sh
     "script-auto-contribute": true,
     "script-lint-design-rules": true,
     "script-verify-design-setup": true,
+    "eslint-page-component-rule": true,
     "dependabot": false
   },
   "changelog": [
+    {
+      "version": "2.2.0",
+      "date": "2025-01-30",
+      "changes": [
+        "ESLint 설정 추가 (페이지 파일 내 컴포넌트 정의 금지)",
+        "verify-design-setup.sh에 ESLint 설정 검증 추가"
+      ]
+    },
     {
       "version": "2.1.0",
       "date": "YYYY-MM-DD",
@@ -810,6 +951,7 @@ jobs:
 - Hook: UI 생성 시 node_modules에서 design-rules.md 자동 로드
 - Hook: 컴포넌트 변경 시 자동 기여
 - Hook: 컴포넌트 작성 시 design-rules 위반 자동 검증 (lint-design-rules.sh)
+- ESLint: 페이지 파일 내 컴포넌트 직접 정의 금지 (eslint.config.mjs)
 - 상태 추적: .claude/design-system-state.json
 - 검증 스크립트: .claude/scripts/verify-design-setup.sh
 - Dependabot: 자동 업데이트 + 자동 머지
@@ -824,6 +966,7 @@ jobs:
 - 하드코딩 색상 (#fff, rgb) → ❌ 위반 탐지
 - 하드코딩 border-radius → ❌ 위반 탐지
 - 불필요한 shadow 사용 → ❌ 위반 탐지
+- 페이지 파일 내 컴포넌트 정의 → ❌ ESLint 에러 (npm run lint)
 
 버전 추적:
 - 현재 설정 버전: 2.1.0
