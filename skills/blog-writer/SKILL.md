@@ -9,18 +9,20 @@ siot 포트폴리오 블로그에 올릴 글을 작성하는 스킬입니다.
 
 ## 블로그 폴더 구조
 
-각 블로그 글은 **폴더** 단위로 관리합니다:
+모든 블로그 글은 **`~/auto-blog/`** 에 모여 관리됩니다.
+각 글은 **폴더** 단위:
 
 ```
-docs/content/blog/
-├── github-api-claude-commands/
+~/auto-blog/
+├── claude-code-mcp-cleanup/
 │   ├── index.mdx          # 본문
 │   └── images/            # 이미지 폴더
-│       ├── before.png
-│       └── after.png
+│       ├── mcp-vs-cli.svg
+│       └── screenshot.png
 └── ...
 ```
 
+**경로**: `~/auto-blog/[slug]/`
 **폴더명**: 영어 케밥케이스 (예: `my-new-post`)
 **본문 파일**: `index.mdx`
 **이미지 폴더**: `images/` (필요시 생성)
@@ -45,9 +47,7 @@ published: true
 ![설명](./images/screenshot.png)
 ```
 
-커밋 시 pre-commit hook이 자동으로:
-1. 로컬 이미지를 GitHub에 업로드
-2. 경로를 jsDelivr CDN URL로 변환
+이미지는 상대 경로로 참조하면 된다.
 
 ---
 
@@ -168,7 +168,7 @@ published: true
 
 ## 새 글 작성 체크리스트
 
-1. [ ] `docs/content/blog/[slug]/` 폴더 생성
+1. [ ] `~/auto-blog/[slug]/` 폴더 생성
 2. [ ] `index.mdx` 작성
 3. [ ] 이미지가 있으면 `images/` 폴더에 저장
 4. [ ] 이미지 경로는 `./images/파일명.png` 형식
