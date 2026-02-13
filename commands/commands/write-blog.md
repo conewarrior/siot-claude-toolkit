@@ -13,7 +13,11 @@ allowed-tools: Read, Write, Skill
 
 ### 1. blog-writer 스킬 참조
 
-`.claude/skills/blog-writer/SKILL.md`를 읽어 블로그 형식과 톤을 파악한다.
+스킬 파일을 다음 순서로 탐색:
+1. 로컬: `.claude/skills/blog-writer/SKILL.md`
+2. 글로벌: `~/.claude/skills/blog-writer/SKILL.md`
+
+첫 번째로 발견된 파일을 읽어 블로그 형식과 톤을 파악한다.
 
 ### 2. 주제 분석
 
@@ -33,10 +37,10 @@ blog-writer 스킬의 구조를 따라:
 
 ### 4. 초안 작성
 
-`docs/content/blog/[slug].mdx` 형식으로 초안 작성:
+`~/auto-blog/[slug]/index.mdx` 형식으로 초안 작성:
 - Frontmatter 포함 (title, description, date, category, published)
 - 이미지 캡쳐 포인트 `[📸 설명]` 마커 삽입
-- 해요체 사용
+- 평서체 사용 ("~했다" 스타일)
 
 ### 5. 사용자 확인
 
@@ -47,7 +51,7 @@ blog-writer 스킬의 구조를 따라:
 
 ### 6. 파일 저장
 
-확인 후 `docs/content/blog/[slug].mdx`에 저장
+확인 후 `~/auto-blog/[slug]/index.mdx`에 저장
 
 ## 출력 형식
 
@@ -67,7 +71,7 @@ blog-writer 스킬의 구조를 따라:
 2. ...
 
 💾 저장하시겠어요? (Y/n)
-   → docs/content/blog/[slug].mdx
+   → ~/auto-blog/[slug]/index.mdx
 ```
 
 ## 예시
