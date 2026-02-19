@@ -1,6 +1,6 @@
 # /setup-design
 
-프로젝트에 @design-geniefy/ui 디자인 시스템을 자동 설정합니다.
+프로젝트에 @gpters-internal/ui 디자인 시스템을 자동 설정합니다.
 
 **한 번 실행으로 완료되는 항목:**
 - npm 패키지 설치
@@ -78,24 +78,26 @@ npm init -y
 
 **패키지 설치:**
 ```bash
-npm install @design-geniefy/ui
+npm install @gpters-internal/ui
 ```
 
-### Step 2.5: 토큰 import 추가
+### Step 2.5: 토큰 로드 추가
 
-**Next.js 프로젝트** (`app/layout.tsx`에 추가):
+> **주의**: Tailwind CSS v4는 CSS `@import`로 외부 URL을 번들링 시도하므로, 반드시 HTML `<link>` 태그로 로드해야 합니다.
+
+**Next.js 프로젝트** (`app/layout.tsx`의 `<head>` 또는 metadata에 추가):
 ```tsx
-import '@design-geniefy/ui/tokens.css';
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/conewarrior/design-system/tokens.css" />
 ```
 
-**React (CRA/Vite)** (`src/index.tsx` 또는 `src/main.tsx`에 추가):
-```tsx
-import '@design-geniefy/ui/tokens.css';
+**React (CRA/Vite)** (`index.html`의 `<head>`에 추가):
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/conewarrior/design-system/tokens.css" />
 ```
 
 **HTML/CSS 프로젝트** (`<head>`에 추가):
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/conewarrior/design-system/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/conewarrior/design-system/tokens.css" />
 ```
 
 ### Step 2.6: Tailwind v4 설치 (shadcn/ui 사용 시)
@@ -128,7 +130,7 @@ export default {
 
 3. **globals.css (또는 메인 CSS 파일)에 Tailwind 추가:**
 
-tokens.css import 다음에 추가:
+tokens.css `<link>` 로드 후, globals.css에 추가:
 ```css
 /* Tailwind CSS v4 */
 @import "tailwindcss";
@@ -176,7 +178,7 @@ tokens.css import 다음에 추가:
 ```markdown
 ## 디자인 시스템
 
-이 프로젝트는 @design-geniefy/ui 디자인 시스템을 사용합니다.
+이 프로젝트는 @gpters-internal/ui 디자인 시스템을 사용합니다.
 
 ### 토큰
 - CDN: https://cdn.jsdelivr.net/gh/conewarrior/design-system/tokens.css
@@ -199,7 +201,7 @@ UI 생성 시 design-rules skill이 node_modules에서 자동 로드됩니다:
 컴포넌트 생성 시 반드시 다음 순서를 따른다:
 
 1. **design-rules.md를 유일한 소스로 사용**
-   - `node_modules/@design-geniefy/ui/.claude/skills/design-rules.md` 규칙 확인
+   - `node_modules/@gpters-internal/ui/.claude/skills/design-rules.md` 규칙 확인
    - 기존 컴포넌트 패턴 복사 금지
 
 2. **생성 전 체크리스트**
@@ -249,7 +251,7 @@ components/ 폴더에 새 컴포넌트 생성 시 자동으로 design-system 저
   "hooks": {
     "UserPromptSubmit": [
       {
-        "hooks": [{"type": "command", "command": "cat node_modules/@design-geniefy/ui/.claude/skills/design-rules.md"}]
+        "hooks": [{"type": "command", "command": "cat node_modules/@gpters-internal/ui/.claude/skills/design-rules.md"}]
       }
     ],
     "PostToolUse": [
@@ -546,29 +548,28 @@ echo "🔍 Design System 설정 검증 중..."
 echo "---"
 
 # 1. npm 패키지 확인
-if [ -d "node_modules/@design-geniefy/ui" ]; then
-  echo -e "${GREEN}✅ npm 패키지: @design-geniefy/ui 설치됨${NC}"
+if [ -d "node_modules/@gpters-internal/ui" ]; then
+  echo -e "${GREEN}✅ npm 패키지: @gpters-internal/ui 설치됨${NC}"
 else
-  echo -e "${RED}❌ npm 패키지: @design-geniefy/ui 미설치${NC}"
+  echo -e "${RED}❌ npm 패키지: @gpters-internal/ui 미설치${NC}"
   MISSING=$((MISSING + 1))
 fi
 
-# 2. tokens.css import 확인
-TOKENS_IMPORTED=false
-if [ -f "app/layout.tsx" ] && grep -q "@design-geniefy/ui/tokens.css" "app/layout.tsx" 2>/dev/null; then
-  TOKENS_IMPORTED=true
-fi
-if [ -f "src/main.tsx" ] && grep -q "@design-geniefy/ui/tokens.css" "src/main.tsx" 2>/dev/null; then
-  TOKENS_IMPORTED=true
-fi
-if [ -f "src/index.tsx" ] && grep -q "@design-geniefy/ui/tokens.css" "src/index.tsx" 2>/dev/null; then
-  TOKENS_IMPORTED=true
+# 2. tokens.css <link> 로드 확인
+TOKENS_LOADED=false
+for f in index.html public/index.html src/index.html; do
+  if [ -f "$f" ] && grep -q "tokens.css" "$f" 2>/dev/null; then
+    TOKENS_LOADED=true
+  fi
+done
+if [ -f "app/layout.tsx" ] && grep -q "tokens.css" "app/layout.tsx" 2>/dev/null; then
+  TOKENS_LOADED=true
 fi
 
-if [ "$TOKENS_IMPORTED" = true ]; then
-  echo -e "${GREEN}✅ tokens.css import 완료${NC}"
+if [ "$TOKENS_LOADED" = true ]; then
+  echo -e "${GREEN}✅ tokens.css <link> 로드 완료${NC}"
 else
-  echo -e "${YELLOW}⚠️ tokens.css import 확인 필요${NC}"
+  echo -e "${YELLOW}⚠️ tokens.css <link> 태그 확인 필요 (HTML <head>에 추가)${NC}"
 fi
 
 # 3. CLAUDE.md 디자인 시스템 섹션 확인
@@ -653,7 +654,7 @@ else
 fi
 
 # 7. Dependabot 설정 확인
-if [ -f ".github/dependabot.yml" ] && grep -q "@design-geniefy/ui" ".github/dependabot.yml" 2>/dev/null; then
+if [ -f ".github/dependabot.yml" ] && grep -q "@gpters-internal/ui" ".github/dependabot.yml" 2>/dev/null; then
   echo -e "${GREEN}✅ Dependabot: 자동 업데이트 설정됨${NC}"
 else
   echo -e "${YELLOW}⚠️ Dependabot: 미설정 (선택사항)${NC}"
@@ -852,7 +853,7 @@ updates:
       time: "09:00"
       timezone: "Asia/Seoul"
     allow:
-      - dependency-name: "@design-geniefy/ui"
+      - dependency-name: "@gpters-internal/ui"
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
@@ -880,11 +881,11 @@ jobs:
     if: github.actor == 'dependabot[bot]'
 
     steps:
-      - name: Check if @design-geniefy/ui update
+      - name: Check if @gpters-internal/ui update
         id: check
         run: |
           TITLE="${{ github.event.pull_request.title }}"
-          if [[ "$TITLE" == *"@design-geniefy/ui"* ]]; then
+          if [[ "$TITLE" == *"@gpters-internal/ui"* ]]; then
             echo "is_geniefy_ui=true" >> $GITHUB_OUTPUT
           else
             echo "is_geniefy_ui=false" >> $GITHUB_OUTPUT
@@ -943,10 +944,10 @@ jobs:
 ### Step 8: 완료 메시지
 
 ```
-✅ @design-geniefy/ui 디자인 시스템 설정 완료!
+✅ @gpters-internal/ui 디자인 시스템 설정 완료!
 
 설치된 항목:
-- npm 패키지: @design-geniefy/ui
+- npm 패키지: @gpters-internal/ui
 - CLAUDE.md: 디자인 규칙 + 컴포넌트 생성 규칙 + 설정 버전 관리
 - Hook: UI 생성 시 node_modules에서 design-rules.md 자동 로드
 - Hook: 컴포넌트 변경 시 자동 기여
