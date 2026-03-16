@@ -1,4 +1,4 @@
-# /setup-design v1.5
+# /setup-design v1.6
 
 프로젝트에 @gpters-internal/ui 디자인 시스템을 자동 설정합니다.
 
@@ -413,7 +413,49 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-### Step 9: 완료 메시지
+### Step 9: Layout Collector 레퍼런스 DB 연동 (선택)
+
+> **Layout Collector**는 팀이 웹에서 수집한 디자인 레퍼런스를 AI가 활용할 수 있게 해주는 도구입니다.
+> 팀원들이 Chrome Extension으로 좋은 웹 디자인을 캡처하면, Claude Code가 UI 작업 시 해당 레퍼런스를 자동 검색하여 실제 디자인에 반영합니다.
+
+**AskUserQuestion으로 설치 여부 확인:**
+```
+질문: "Layout Collector를 설정할까요?"
+
+팀원들이 수집한 웹 디자인 레퍼런스를 Claude Code가 자동으로 검색하여
+UI 작업에 반영하는 MCP 서버입니다.
+
+- 설정하면: UI 작업 시 "@layout-curator 랜딩 페이지 만들어줘"처럼
+  팀의 레퍼런스 DB를 활용할 수 있습니다.
+- Chrome Extension(별도 설치)으로 레퍼런스를 수집할 수 있습니다.
+
+옵션:
+1. 설정하기 (Recommended) — MCP 서버 + Layout Curator 에이전트 자동 설정
+2. 건너뛰기 — 나중에 수동으로 설정 가능
+```
+
+**"설정하기" 선택 시:**
+```bash
+npx @gpters-internal/layout-collector-mcp init
+```
+
+이 명령은 다음을 자동으로 수행합니다:
+- `.claude/agents/layout-curator.md` 생성 — UI 작업 시 레퍼런스 자동 검색 에이전트
+- `.mcp.json`에 `layout-collector` MCP 서버 등록 — Supabase 레퍼런스 DB 연결
+
+**설정 완료 후 안내:**
+```
+Layout Collector 설정 완료!
+
+사용법:
+- "@layout-curator 랜딩 페이지 만들어줘" — 레퍼런스 검색 후 디자인 반영
+- Chrome Extension으로 레퍼런스 수집: [팀 내부 공유 링크]
+```
+
+**"건너뛰기" 선택 시:**
+→ Step 10으로 진행 (이후 `npx @gpters-internal/layout-collector-mcp init`으로 수동 설정 가능)
+
+### Step 10: 완료 메시지
 
 ```
 ✅ @gpters-internal/ui 디자인 시스템 설정 완료!
@@ -424,6 +466,7 @@ jobs:
 - Hook: UI 관련 키워드 감지 시 design-rules.md 조건부 로드 (컨텍스트 절약)
 - Hook: 컴포넌트 작성 시 design-rules 위반 자동 검증 (lint-design-rules.sh)
 - Dependabot: @gpters-internal/ui 자동 업데이트
+- Layout Collector: 팀 레퍼런스 DB 연동 (설정한 경우)
 
 자동 검증:
 - 텍스트 아이콘/이모지 사용 → ❌ 위반 탐지
